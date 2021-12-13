@@ -1,0 +1,55 @@
+from cs50 import get_string
+
+
+def main():
+    text = get_string("Text: ")  # Ask user for a piece of text
+    letters = count_letters(text)
+    words = count_words(text)
+    sentences = count_sentences(text)
+    CL_Index(letters, words, sentences)  # ColemanLiauIndex calculation
+
+
+def count_letters(text):
+    count = 0
+    for i in text:
+        if str.isalpha(i) == True:
+            count += 1
+    return count
+
+
+def count_words(text):
+    count = 1  # One because of the last word (assumes no space at the end)
+    for i in text:
+        if str.isspace(i) == True:
+            count += 1
+    return count
+
+
+def count_sentences(text):
+    count = 0
+    for i in text:
+        if ord(i) == 33:  # If text has "!"
+            count += 1
+        elif ord(i) == 46:  # If text has "."
+            count += 1
+        elif ord(i) == 63:  # If text has "?"
+            count += 1
+    return count
+
+
+def CL_Index(letters, words, sentences):
+    L = letters / words * 100
+    S = sentences / words * 100
+
+    # CL_Index formula
+    index = 0.0588 * L - 0.296 * S - 15.8
+
+    if index < 1:
+        return print("Before Grade 1")
+    elif index >= 16:
+        return print("Grade 16+")
+    else:
+        return print("Grade", round(index))
+
+
+main()
